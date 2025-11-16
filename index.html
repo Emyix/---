@@ -1319,7 +1319,13 @@
                     'promo_activate': 'Активировать',
                     'promo_success': 'Промокод успешно активирован!',
                     'promo_error': 'Неверный промокод',
-                    'changelog_title': 'Журнал обновлений'
+                    'changelog_title': 'Журнал обновлений',
+                    'auto_clicker_detected': 'Обнаружен автокликер!',
+                    'auto_clicker_warning': 'Использование автокликера запрещено. Ваши звезды сброшены до 1000, а инвентарь очищен.',
+                    'sell_all_title': 'Продать все подарки',
+                    'sell_all_confirm': 'Вы уверены, что хотите продать ВСЕ подарки из инвентаря?',
+                    'sell_all_warning': 'Это действие нельзя отменить! Вы потеряете все подарки.',
+                    'sell_all_complete': 'Все подарки проданы!'
                 },
                 'en': {
                     'clicker_title': 'Star Clicker',
@@ -1393,7 +1399,13 @@
                     'promo_activate': 'Activate',
                     'promo_success': 'Promo code activated successfully!',
                     'promo_error': 'Invalid promo code',
-                    'changelog_title': 'Changelog'
+                    'changelog_title': 'Changelog',
+                    'auto_clicker_detected': 'Auto-clicker detected!',
+                    'auto_clicker_warning': 'Using auto-clicker is prohibited. Your stars have been reset to 1000 and your inventory has been cleared.',
+                    'sell_all_title': 'Sell All Gifts',
+                    'sell_all_confirm': 'Are you sure you want to sell ALL gifts from your inventory?',
+                    'sell_all_warning': 'This action cannot be undone! You will lose all gifts.',
+                    'sell_all_complete': 'All gifts sold!'
                 }
             };
 
@@ -1723,7 +1735,7 @@
                     sellAllBtn.style.backgroundColor = 'var(--red-color)';
                     sellAllBtn.style.fontSize = '1.1rem';
                     sellAllBtn.style.padding = '12px 24px';
-                    sellAllBtn.innerHTML = `💰 Продать все (${totalValue} 🌟)`;
+                    sellAllBtn.innerHTML = `💰 ${t('sell_btn')} ${t('inventory_title')} (${totalValue} 🌟)`;
                     sellAllBtn.addEventListener('click', () => {
                         showSellAllConfirm(totalValue);
                     });
@@ -1862,7 +1874,7 @@
                                 ${t('sell_btn')}
                             </button>
                             <button class="primary-btn" style="background-color: var(--border-color)" data-modal-close>
-                                Отмена
+                                ${currentLanguage === 'ru' ? 'Отмена' : 'Cancel'}
                             </button>
                         </div>
                         
@@ -1895,24 +1907,24 @@
                 const confirmHtml = `
                     <div class="sell-confirm-modal">
                         <span class="modal-icon">💰</span>
-                        <h4>Продать все подарки?</h4>
-                        <p>Вы уверены, что хотите продать ВСЕ подарки из инвентаря?</p>
+                        <h4>${t('sell_all_title')}</h4>
+                        <p>${t('sell_all_confirm')}</p>
                         
                         <div class="sell-price">+${totalValue} 🌟</div>
                         
                         <div class="inspect-actions">
                             <button class="primary-btn" id="confirm-sell-all-btn" data-total-value="${totalValue}">
-                                Продать все
+                                ${t('sell_btn')} ${t('inventory_title')}
                             </button>
                             <button class="primary-btn" style="background-color: var(--border-color)" data-modal-close>
-                                Отмена
+                                ${currentLanguage === 'ru' ? 'Отмена' : 'Cancel'}
                             </button>
                         </div>
                         
-                        <p class="sell-warning">Это действие нельзя отменить! Вы потеряете все подарки.</p>
+                        <p class="sell-warning">${t('sell_all_warning')}</p>
                     </div>
                 `;
-                showModal('Продать все подарки', confirmHtml);
+                showModal(t('sell_all_title'), confirmHtml);
             }
 
             function sellAllGifts(totalValue) {
@@ -1935,15 +1947,15 @@
                     const successHtml = `
                         <div class="sell-confirm-modal">
                             <span class="modal-icon">💰</span>
-                            <h4>Все подарки проданы!</h4>
-                            <p>Вы получили:</p>
+                            <h4>${t('sell_all_complete')}</h4>
+                            <p>${currentLanguage === 'ru' ? 'Вы получили:' : 'You received:'}</p>
                             <div class="sell-price">+${totalValue} 🌟</div>
                             <button class="primary-btn" data-modal-close>
                                 OK
                             </button>
                         </div>
                     `;
-                    showModal('Продажа завершена', successHtml);
+                    showModal(t('sell_all_complete'), successHtml);
                 }, giftItems.length * 100 + 600);
             }
 
@@ -2305,8 +2317,8 @@
                     resultMessage = t('battle_win_message');
                     winner = t('battle_player');
                 } else if (botTotal > playerTotal) {
-                    // Бот победил - игрок ничего не получает
-                    inventory.push(...playerGifts); // Игрок оставляет свои подарки
+                    // Бот победил - игрок теряет свои подарки
+                    // Не добавляем подарки игрока в инвентарь (они проиграны)
                     resultMessage = t('battle_lose_message');
                     winner = t('battle_bot');
                 } else {
@@ -2488,12 +2500,14 @@
                 const playerValue = selectedPlayerGifts.reduce((sum, gift) => sum + calculateValue(gift).value, 0);
                 const botValue = botGifts.reduce((sum, gift) => sum + calculateValue(gift).value, 0);
                 
-                // Бот соглашается только если разница в стоимости не превышает 15%
+                // Бот соглашается только если он не в минусе на 15% или более
                 const maxDifference = 0.15; // 15%
-                const difference = Math.abs(playerValue - botValue) / Math.max(playerValue, botValue);
+                const difference = (botValue - playerValue) / botValue; // Насколько бот в минусе
                 
                 if (difference > maxDifference) {
-                    showAlert(t('trade_rejected'), 'Бот отклоняет сделку: разница в стоимости слишком велика (максимум 15%)');
+                    showAlert(t('trade_rejected'), currentLanguage === 'ru' 
+                        ? 'Бот отклоняет сделку: он теряет более 15% стоимости' 
+                        : 'Bot rejects the deal: it loses more than 15% of value');
                     return;
                 }
                 
@@ -2574,7 +2588,7 @@
                 renderInventory();
                 
                 // Показать сообщение о нарушении
-                showAlert('Обнаружен автокликер!', 'Использование автокликера запрещено. Ваши звезды сброшены до 1000, а инвентарь очищен.');
+                showAlert(t('auto_clicker_detected'), t('auto_clicker_warning'));
                 
                 // Сброс флага
                 autoClickerDetected = false;
@@ -2701,7 +2715,7 @@
                             
                             <dt>${t('inspect_value')}</dt>
                             <dd class="value ${hasMultiplier ? 'multiplier' : ''}">
-                                ${value} 🌟 ${hasMultiplier ? '(Бонус!)' : ''}
+                                ${value} 🌟 ${hasMultiplier ? (currentLanguage === 'ru' ? '(Бонус!)' : '(Bonus!)') : ''}
                             </dd>
                         </dl>
                     </div>
@@ -2751,13 +2765,13 @@
                 const promoCode = promoCodeInput.value.trim().toUpperCase();
                 
                 if (!promoCode) {
-                    showAlert('Ошибка', 'Введите промокод');
+                    showAlert(currentLanguage === 'ru' ? 'Ошибка' : 'Error', currentLanguage === 'ru' ? 'Введите промокод' : 'Enter promo code');
                     return;
                 }
                 
                 // Проверяем, не использовался ли уже промокод
                 if (usedPromoCodes.includes(promoCode)) {
-                    showAlert('Ошибка', 'Этот промокод уже был использован');
+                    showAlert(currentLanguage === 'ru' ? 'Ошибка' : 'Error', currentLanguage === 'ru' ? 'Этот промокод уже был использован' : 'This promo code has already been used');
                     return;
                 }
                 
@@ -2771,7 +2785,23 @@
                     const successHtml = `
                         <div class="promo-success">
                             <h4>${t('promo_success')}</h4>
-                            <p>Вы получили 15000 🌟!</p>
+                            <p>${currentLanguage === 'ru' ? 'Вы получили 15000 🌟!' : 'You received 15000 🌟!'}</p>
+                            <button class="primary-btn" data-modal-close>
+                                OK
+                            </button>
+                        </div>
+                    `;
+                    modalBody.innerHTML = successHtml;
+                } else if (promoCode === 'BUGFIXXX') {
+                    stars += 5000;
+                    usedPromoCodes.push(promoCode);
+                    saveGame();
+                    updateStarDisplay();
+                    
+                    const successHtml = `
+                        <div class="promo-success">
+                            <h4>${t('promo_success')}</h4>
+                            <p>${currentLanguage === 'ru' ? 'Вы получили 5000 🌟!' : 'You received 5000 🌟!'}</p>
                             <button class="primary-btn" data-modal-close>
                                 OK
                             </button>
@@ -2796,11 +2826,11 @@
                     <div class="settings-content">
                         <h4 style="margin-bottom: 10px; font-weight: bold;">${t('changelog_title')}</h4>
                         <ul class="changelog-list">
-                            <li>• Обнаружитель автокликера</li>
-                            <li>• Промокоды (промокод: 1STPROMO)</li>
+                            <li>• ${currentLanguage === 'ru' ? 'Баг-фикс' : 'Bug fixes'}</li>
+                            <li>• ${currentLanguage === 'ru' ? 'Промокоды (промокоды: 1STPROMO, BUGFIXXX)' : 'Promo codes (codes: 1STPROMO, BUGFIXXX)'}</li>
                         </ul>
                         <button class="primary-btn" data-modal-close>
-                            Закрыть
+                            ${currentLanguage === 'ru' ? 'Закрыть' : 'Close'}
                         </button>
                     </div>
                 `;
