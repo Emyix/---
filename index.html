@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -220,6 +220,16 @@
             border-color: var(--primary-accent);
         }
         
+        /* Стили для кастомных изображений кейсов */
+        .case-item-custom-icon {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+            border-radius: 8px;
+            margin: 0 auto;
+        }
+
         .case-item span { 
             font-size: 4rem; 
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
@@ -1106,6 +1116,15 @@
             margin-bottom: 20px;
             text-align: center;
         }
+
+        /* Стили для маленьких изображений в битвах */
+        .battle-option-custom-icon {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+            margin: 0 auto 8px auto;
+        }
     </style>
 </head>
 <body>
@@ -1136,8 +1155,8 @@
                 <div class="store-grid" id="store-grid">
                     <!-- Кейсы будут добавлены через JavaScript -->
                 </div>
-                <button class="battle-btn" id="battle-btn">⚔️ Битва</button>
-                <button class="trade-btn" id="trade-btn">🔄 Трейд</button>
+                <button class="battle-btn" id="battle-btn">⚔️ Битва с ботом</button>
+                <button class="trade-btn" id="trade-btn">🔄 Трейд с ботом</button>
             </section>
 
             <section class="card inventory-section">
@@ -1174,7 +1193,7 @@
                     'clicker_desc': 'Нажми на звезду, чтобы заработать!',
                     'store_title': 'Магазин Кейсов',
                     'inventory_title': 'Ваши Подарки',
-                    'inventory_empty': 'Инвентарь пуст...',
+                    'inventory_empty': 'Ваш инвентарь пуст. Купите кейс, чтобы получить первый подарок!',
                     'case_common_name': 'Обычный Кейс',
                     'case_rare_name': 'Редкий Кейс',
                     'case_epic_name': 'Эпический Кейс',
@@ -1186,9 +1205,9 @@
                     'buy_btn': 'Купить',
                     'upgrade_btn': 'Улучшить',
                     'sell_btn': 'Продать',
-                    'battle_btn': 'Битва',
-                    'trade_btn': 'Трейд',
-                    'trade_title': 'Трейд',
+                    'battle_btn': 'Битва с ботом',
+                    'trade_btn': 'Трейд с ботом',
+                    'trade_title': 'Трейд с ботом',
                     'trade_select': 'Выберите подарки для обмена',
                     'trade_player': 'Ваши подарки',
                     'trade_bot': 'Предложение бота',
@@ -1198,7 +1217,7 @@
                     'trade_success': 'Трейд успешно завершен!',
                     'trade_no_selection': 'Выберите хотя бы один подарок для обмена',
                     'trade_rejected': 'Сделка отклонена',
-                    'battle_title': 'Битва',
+                    'battle_title': 'Битва с ботом',
                     'battle_select_cases': 'Выберите кейсы для битвы',
                     'battle_select_count': 'Выберите количество',
                     'battle_total_cost': 'Общая стоимость',
@@ -1254,9 +1273,9 @@
                     'buy_btn': 'Buy',
                     'upgrade_btn': 'Upgrade',
                     'sell_btn': 'Sell',
-                    'battle_btn': 'Battle',
-                    'trade_btn': 'Trade',
-                    'trade_title': 'Trade',
+                    'battle_btn': 'Battle with Bot',
+                    'trade_btn': 'Trade with Bot',
+                    'trade_title': 'Trade with Bot',
                     'trade_select': 'Select gifts for trade',
                     'trade_player': 'Your gifts',
                     'trade_bot': 'Bot offer',
@@ -1266,7 +1285,7 @@
                     'trade_success': 'Trade completed successfully!',
                     'trade_no_selection': 'Select at least one gift for trade',
                     'trade_rejected': 'Trade rejected',
-                    'battle_title': 'Battle',
+                    'battle_title': 'Battle with Bot',
                     'battle_select_cases': 'Select cases for battle',
                     'battle_select_count': 'Select quantity',
                     'battle_total_cost': 'Total cost',
@@ -1360,10 +1379,12 @@
                 'sun': { name: 'Sun', icon: '☀️', rarity: 2.6, weight: 11 }
             };
 
+            // БАЗА ДАННЫХ КЕЙСОВ С ИЗОБРАЖЕНИЯМИ
             const CASES = {
                 'common': { 
                     nameKey: 'case_common_name', 
-                    icon: '🎁', 
+                    icon: '<a href="https://ibb.co/Z11nj9f6"><img src="https://i.ibb.co/Z11nj9f6/daef7b6e-0005-4fc1-824d-678c5edc93b7-no-bg-preview-carve-photos.png"', // Замените на вашу ссылку
+                    iconType: 'image',
                     cost: 100, 
                     loot: { 
                         gifts: ['duck', 'cat', 'fox'], 
@@ -1373,7 +1394,8 @@
                 },
                 'rare': { 
                     nameKey: 'case_rare_name', 
-                    icon: '🎀', 
+                    icon: '<a href="https://ibb.co/N2mLymqH"><img src="https://i.ibb.co/N2mLymqH/5247130699528080153-no-bg-preview-carve-photos.png"', // Замените на вашу ссылку
+                    iconType: 'image',
                     cost: 500, 
                     loot: { 
                         gifts: ['duck', 'cat', 'rocket', 'whale', 'ghost'], 
@@ -1383,7 +1405,8 @@
                 },
                 'epic': { 
                     nameKey: 'case_epic_name', 
-                    icon: '📦', 
+                    icon: '<a href="https://ibb.co/rB5SpG5"><img src="https://i.ibb.co/rB5SpG5/5247130699528080147-no-bg-preview-carve-photos.png"', // Замените на вашу ссылку
+                    iconType: 'image',
                     cost: 2000, 
                     loot: { 
                         gifts: ['crystal', 'snake', 'whale', 'robot', 'tiger', 'owl'], 
@@ -1393,7 +1416,8 @@
                 },
                 'legendary': { 
                     nameKey: 'case_legendary_name', 
-                    icon: '🔥', 
+                    icon: '<a href="https://ibb.co/mV7Z3n5W"><img src="https://i.ibb.co/mV7Z3n5W/5247130699528080150-no-bg-preview-carve-photos.png"', // Замените на вашу ссылку
+                    iconType: 'image',
                     cost: 5000, 
                     loot: { 
                         gifts: ['dragon', 'unicorn', 'phoenix', 'alien', 'peacock'], 
@@ -1403,7 +1427,8 @@
                 },
                 'mystery': { 
                     nameKey: 'case_mystery_name', 
-                    icon: '❓', 
+                    icon: '<a href="https://ibb.co/608CGrN6"><img src="https://i.ibb.co/608CGrN6/5247130699528080149-no-bg-preview-carve-photos.png"', // Замените на вашу ссылку
+                    iconType: 'image',
                     cost: 1500, 
                     loot: { 
                         gifts: ['duck', 'cat', 'rocket', 'whale', 'crystal', 'snake', 'robot', 'panda'], 
@@ -1413,7 +1438,8 @@
                 },
                 'premium': { 
                     nameKey: 'case_premium_name', 
-                    icon: '💎', 
+                    icon: '<a href="https://ibb.co/MDD2Xtkz"><img src="https://i.ibb.co/MDD2Xtkz/5247130699528080154-no-bg-preview-carve-photos.png"', // Замените на вашу ссылку
+                    iconType: 'image',
                     cost: 3500, 
                     loot: { 
                         gifts: ['snake', 'whale', 'dragon', 'unicorn', 'phoenix', 'dinosaur'], 
@@ -1423,7 +1449,8 @@
                 },
                 'divine': { 
                     nameKey: 'case_divine_name', 
-                    icon: '✨', 
+                    icon: '<a href="https://ibb.co/PvX59vhD"><img src="https://i.ibb.co/PvX59vhD/5247130699528080152-no-bg-preview-carve-photos.png"', // Замените на вашу ссылку
+                    iconType: 'image',
                     cost: 8000, 
                     loot: { 
                         gifts: ['phoenix', 'dragon', 'unicorn', 'alien', 'peacock'], 
@@ -1433,7 +1460,8 @@
                 },
                 'ancient': { 
                     nameKey: 'case_ancient_name', 
-                    icon: '🏺', 
+                    icon: '<a href="https://ibb.co/jNtW0nD"><img src="https://i.ibb.co/jNtW0nD/5247130699528080151-no-bg-preview-carve-photos.png"', // Замените на вашу ссылку
+                    iconType: 'image',
                     cost: 12000, 
                     loot: { 
                         gifts: ['dragon', 'phoenix', 'dinosaur', 'alien'], 
@@ -1538,8 +1566,19 @@
                     const caseData = CASES[caseId];
                     const caseEl = document.createElement('div');
                     caseEl.className = 'case-item';
+                    
+                    let iconHtml;
+                    if (caseData.iconType === 'image') {
+                        // Используем изображение
+                        iconHtml = `<img src="${caseData.icon}" alt="${t(caseData.nameKey)}" class="case-item-custom-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                                   <span style="display: none; font-size: 4rem;">📦</span>`;
+                    } else {
+                        // Используем эмодзи (обратная совместимость)
+                        iconHtml = `<span>${caseData.icon}</span>`;
+                    }
+                    
                     caseEl.innerHTML = `
-                        <span>${caseData.icon}</span>
+                        ${iconHtml}
                         <p>${t(caseData.nameKey)}</p>
                         <button class="primary-btn" data-case-id="${caseId}" data-cost="${caseData.cost}">
                             ${t('buy_btn')} (${caseData.cost} 🌟)
@@ -1863,6 +1902,7 @@
                 return html;
             }
 
+            // ИСПРАВЛЕННАЯ ФУНКЦИЯ АНИМАЦИИ КЕЙСА
             function startCaseSpinnerAnimation(caseId, possibleGifts) {
                 const newGift = generateRandomGift(caseId);
                 const giftProto = GIFT_CATALOG[newGift.giftId];
@@ -1910,6 +1950,9 @@
                         <span class="modal-icon">${giftProto.icon}</span>
                         <h4>${t('you_got')}</h4>
                         <p>${giftProto.baseName}</p>
+                        <button class="primary-btn" data-modal-close style="margin-top: 20px;">
+                            OK
+                        </button>
                     </div>
                 `;
                 modalBody.innerHTML = revealHtml;
@@ -2052,13 +2095,24 @@
                     <div class="battle-section">
                         <h4>${t('battle_select_cases')}</h4>
                         <div class="battle-options" id="battle-options">
-                            ${Object.keys(CASES).map(caseId => `
-                                <div class="battle-option ${selectedBattleCase === caseId ? 'selected' : ''}" data-case-id="${caseId}">
-                                    <div class="battle-option-icon">${CASES[caseId].icon}</div>
-                                    <div class="battle-option-name">${t(CASES[caseId].nameKey)}</div>
-                                    <div class="battle-option-cost">${CASES[caseId].cost} 🌟</div>
-                                </div>
-                            `).join('')}
+                            ${Object.keys(CASES).map(caseId => {
+                                const caseData = CASES[caseId];
+                                let iconHtml;
+                                if (caseData.iconType === 'image') {
+                                    iconHtml = `<img src="${caseData.icon}" alt="${t(caseData.nameKey)}" class="battle-option-custom-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                                              <span style="display: none; font-size: 2.5rem;">📦</span>`;
+                                } else {
+                                    iconHtml = `<div class="battle-option-icon">${caseData.icon}</div>`;
+                                }
+                                
+                                return `
+                                    <div class="battle-option ${selectedBattleCase === caseId ? 'selected' : ''}" data-case-id="${caseId}">
+                                        ${iconHtml}
+                                        <div class="battle-option-name">${t(caseData.nameKey)}</div>
+                                        <div class="battle-option-cost">${caseData.cost} 🌟</div>
+                                    </div>
+                                `;
+                            }).join('')}
                         </div>
 
                         <h4>${t('battle_select_count')}</h4>
@@ -2356,7 +2410,7 @@
                 const difference = Math.abs(playerValue - botValue) / Math.max(playerValue, botValue);
                 
                 if (difference > maxDifference) {
-                    showAlert(t('trade_rejected'), 'Бот отклоняет сделку');
+                    showAlert(t('trade_rejected'), 'Бот отклоняет сделку: разница в стоимости слишком велика (максимум 15%)');
                     return;
                 }
                 
