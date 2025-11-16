@@ -84,26 +84,35 @@
             gap: 16px;
         }
 
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         .app-header h1 {
             font-size: 1.5rem;
             font-weight: 700;
             color: var(--text-color);
         }
 
-        #settings-btn {
-            font-size: 1.8rem;
+        .header-btn {
+            font-size: 1.5rem;
             background: none;
             border: none;
             color: var(--text-color-secondary);
             cursor: pointer;
-            transition: transform 0.2s ease, color 0.2s ease;
+            transition: all 0.2s ease;
             padding: 8px;
             border-radius: 8px;
         }
-        #settings-btn:hover {
+        .header-btn:hover {
             color: var(--text-color);
-            transform: rotate(45deg);
             background-color: rgba(255,255,255,0.1);
+        }
+
+        #settings-btn:hover {
+            transform: rotate(45deg);
         }
 
         .star-balance {
@@ -1125,6 +1134,52 @@
             filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
             margin: 0 auto 8px auto;
         }
+
+        /* --- Новые стили для промокодов и журнала обновлений --- */
+        .promo-input {
+            width: 100%;
+            padding: 12px 16px;
+            margin: 16px 0;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: var(--secondary-card-bg);
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        .promo-input:focus {
+            outline: none;
+            border-color: var(--primary-accent);
+        }
+
+        .promo-success {
+            color: var(--green-color);
+            font-weight: 700;
+            margin: 16px 0;
+            text-align: center;
+        }
+
+        .promo-error {
+            color: var(--red-color);
+            font-weight: 700;
+            margin: 16px 0;
+            text-align: center;
+        }
+
+        .changelog-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 16px 0;
+        }
+
+        .changelog-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .changelog-list li:last-child {
+            border-bottom: none;
+        }
     </style>
 </head>
 <body>
@@ -1133,13 +1188,17 @@
         <header class="app-header">
             <div class="header-left">
                 <h1>Case Battles</h1>
-                <button id="settings-btn" title="Настройки">⚙️</button>
+                <button id="settings-btn" class="header-btn" title="Настройки">⚙️</button>
             </div>
-            <div class="star-balance">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#fddc76"/>
-                </svg>
-                <span id="star-count">0</span>
+            <div class="header-right">
+                <button id="promo-btn" class="header-btn" title="Промокоды">🎁</button>
+                <button id="changelog-btn" class="header-btn" title="Журнал обновлений">📋</button>
+                <div class="star-balance">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#fddc76"/>
+                    </svg>
+                    <span id="star-count">0</span>
+                </div>
             </div>
         </header>
 
@@ -1254,7 +1313,13 @@
                     'not_enough_stars': 'Недостаточно звезд!',
                     'alert_need_stars': 'Нужно',
                     'alert_to_buy': 'для покупки',
-                    'alert_to_upgrade': 'для улучшения'
+                    'alert_to_upgrade': 'для улучшения',
+                    'promo_title': 'Активация промокода',
+                    'promo_placeholder': 'Введите промокод',
+                    'promo_activate': 'Активировать',
+                    'promo_success': 'Промокод успешно активирован!',
+                    'promo_error': 'Неверный промокод',
+                    'changelog_title': 'Журнал обновлений'
                 },
                 'en': {
                     'clicker_title': 'Star Clicker',
@@ -1322,7 +1387,13 @@
                     'not_enough_stars': 'Not enough stars!',
                     'alert_need_stars': 'You need',
                     'alert_to_buy': 'to buy',
-                    'alert_to_upgrade': 'to upgrade'
+                    'alert_to_upgrade': 'to upgrade',
+                    'promo_title': 'Promo Code Activation',
+                    'promo_placeholder': 'Enter promo code',
+                    'promo_activate': 'Activate',
+                    'promo_success': 'Promo code activated successfully!',
+                    'promo_error': 'Invalid promo code',
+                    'changelog_title': 'Changelog'
                 }
             };
 
@@ -1475,6 +1546,10 @@
             let stars = 1000;
             let inventory = [];
             let currentLanguage = 'ru';
+            let lastClickTime = 0;
+            let clickCount = 0;
+            let autoClickerDetected = false;
+            let usedPromoCodes = JSON.parse(localStorage.getItem('giftsBattle_usedPromoCodes') || '[]');
             
             // --- 3. DOM ЭЛЕМЕНТЫ ---
             const starCountDisplay = document.getElementById('star-count');
@@ -1490,6 +1565,8 @@
             const settingsBtn = document.getElementById('settings-btn');
             const battleBtn = document.getElementById('battle-btn');
             const tradeBtn = document.getElementById('trade-btn');
+            const promoBtn = document.getElementById('promo-btn');
+            const changelogBtn = document.getElementById('changelog-btn');
 
             // --- 4. ЯДРО - ФУНКЦИИ ПЕРЕВОДА (i18n) ---
             function t(key) {
@@ -1528,6 +1605,7 @@
                 try {
                     localStorage.setItem('giftsBattle_stars', stars);
                     localStorage.setItem('giftsBattle_inventory', JSON.stringify(inventory));
+                    localStorage.setItem('giftsBattle_usedPromoCodes', JSON.stringify(usedPromoCodes));
                 } catch (e) {
                     console.error("Failed to save game:", e);
                 }
@@ -1542,16 +1620,21 @@
 
                     const savedStars = localStorage.getItem('giftsBattle_stars');
                     const savedInventory = localStorage.getItem('giftsBattle_inventory');
+                    const savedPromoCodes = localStorage.getItem('giftsBattle_usedPromoCodes');
                     if (savedStars !== null) {
                         stars = parseInt(savedStars, 10) || 0;
                     }
                     if (savedInventory) {
                         inventory = JSON.parse(savedInventory) || [];
                     }
+                    if (savedPromoCodes) {
+                        usedPromoCodes = JSON.parse(savedPromoCodes) || [];
+                    }
                 } catch (e) {
                     console.error("Failed to load game:", e);
                     stars = 1000;
                     inventory = [];
+                    usedPromoCodes = [];
                 }
                 setLanguage(currentLanguage);
                 updateStarDisplay();
@@ -2444,6 +2527,23 @@
 
             // --- 13. ОБРАБОТЧИКИ СОБЫТИЙ ---
             function handleStarClick(event) {
+                const currentTime = Date.now();
+                
+                // Проверка на автокликер
+                if (currentTime - lastClickTime < 50) { // Меньше 50 мс между кликами
+                    clickCount++;
+                    
+                    if (clickCount > 5) { // Если больше 5 быстрых кликов подряд
+                        autoClickerDetected = true;
+                        handleAutoClickerDetection();
+                        return;
+                    }
+                } else {
+                    clickCount = 0;
+                }
+                
+                lastClickTime = currentTime;
+                
                 stars += 1;
                 updateStarDisplay();
                 saveGame();
@@ -2463,6 +2563,22 @@
                 setTimeout(() => {
                     floatingText.remove();
                 }, 1000);
+            }
+
+            function handleAutoClickerDetection() {
+                // Сброс звезд до 1000 и очистка инвентаря
+                stars = 1000;
+                inventory = [];
+                saveGame();
+                updateStarDisplay();
+                renderInventory();
+                
+                // Показать сообщение о нарушении
+                showAlert('Обнаружен автокликер!', 'Использование автокликера запрещено. Ваши звезды сброшены до 1000, а инвентарь очищен.');
+                
+                // Сброс флага
+                autoClickerDetected = false;
+                clickCount = 0;
             }
 
             function handleBuyCase(event) {
@@ -2526,6 +2642,14 @@
 
             function handleTradeClick() {
                 showTradeModal();
+            }
+
+            function handlePromoClick() {
+                showPromoModal();
+            }
+
+            function handleChangelogClick() {
+                showChangelogModal();
             }
 
             // --- 14. МОДАЛЬНЫЕ ОКНА ---
@@ -2607,6 +2731,82 @@
                 showModal('settings_title', settingsHtml);
             }
 
+            function showPromoModal() {
+                const promoHtml = `
+                    <div class="settings-content">
+                        <h4 style="margin-bottom: 10px;">${t('promo_title')}</h4>
+                        <input type="text" class="promo-input" id="promo-code-input" placeholder="${t('promo_placeholder')}">
+                        <button class="primary-btn" id="activate-promo-btn" style="background-color: var(--green-color);">
+                            ${t('promo_activate')}
+                        </button>
+                    </div>
+                `;
+                showModal('promo_title', promoHtml);
+                
+                document.getElementById('activate-promo-btn').addEventListener('click', activatePromoCode);
+            }
+
+            function activatePromoCode() {
+                const promoCodeInput = document.getElementById('promo-code-input');
+                const promoCode = promoCodeInput.value.trim().toUpperCase();
+                
+                if (!promoCode) {
+                    showAlert('Ошибка', 'Введите промокод');
+                    return;
+                }
+                
+                // Проверяем, не использовался ли уже промокод
+                if (usedPromoCodes.includes(promoCode)) {
+                    showAlert('Ошибка', 'Этот промокод уже был использован');
+                    return;
+                }
+                
+                // Проверяем промокоды
+                if (promoCode === '1STPROMO') {
+                    stars += 15000;
+                    usedPromoCodes.push(promoCode);
+                    saveGame();
+                    updateStarDisplay();
+                    
+                    const successHtml = `
+                        <div class="promo-success">
+                            <h4>${t('promo_success')}</h4>
+                            <p>Вы получили 15000 🌟!</p>
+                            <button class="primary-btn" data-modal-close>
+                                OK
+                            </button>
+                        </div>
+                    `;
+                    modalBody.innerHTML = successHtml;
+                } else {
+                    const errorHtml = `
+                        <div class="promo-error">
+                            <h4>${t('promo_error')}</h4>
+                            <button class="primary-btn" data-modal-close>
+                                OK
+                            </button>
+                        </div>
+                    `;
+                    modalBody.innerHTML = errorHtml;
+                }
+            }
+
+            function showChangelogModal() {
+                const changelogHtml = `
+                    <div class="settings-content">
+                        <h4 style="margin-bottom: 10px; font-weight: bold;">${t('changelog_title')}</h4>
+                        <ul class="changelog-list">
+                            <li>• Обнаружитель автокликера</li>
+                            <li>• Промокоды (промокод: 1STPROMO)</li>
+                        </ul>
+                        <button class="primary-btn" data-modal-close>
+                            Закрыть
+                        </button>
+                    </div>
+                `;
+                showModal('changelog_title', changelogHtml);
+            }
+
             // --- 15. ИНИЦИАЛИЗАЦИЯ И ОБЩИЕ СЛУШАТЕЛИ ---
             clickerContainer.addEventListener('pointerdown', handleStarClick);
             storeGrid.addEventListener('click', handleBuyCase);
@@ -2622,6 +2822,8 @@
             settingsBtn.addEventListener('click', handleSettingsClick);
             battleBtn.addEventListener('click', handleBattleClick);
             tradeBtn.addEventListener('click', handleTradeClick);
+            promoBtn.addEventListener('click', handlePromoClick);
+            changelogBtn.addEventListener('click', handleChangelogClick);
 
             modalBackdrop.addEventListener('click', (e) => {
                 if (e.target === modalBackdrop || e.target.closest('[data-modal-close]')) {
