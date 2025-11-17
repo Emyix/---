@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Case Battles</title>
+    <title>UnGifts</title>
     <style>
         /* --- 1. Глобальные стили и переменные --- */
         :root {
@@ -1098,6 +1098,14 @@
         .bg-forest { background: linear-gradient(145deg, #228b22, #32cd32); }
         .bg-cosmic { background: linear-gradient(145deg, #8a2be2, #4b0082); }
         .bg-crystal { background: linear-gradient(145deg, #e0ffff, #afeeee); color: #333; }
+        .bg-emerald { background: linear-gradient(145deg, #50c878, #008000); }
+        .bg-sapphire { background: linear-gradient(145deg, #0f52ba, #00308f); }
+        .bg-ruby { background: linear-gradient(145deg, #e0115f, #9b111e); }
+        .bg-diamond { background: linear-gradient(145deg, #b9f2ff, #e6f7ff); color: #333; }
+        .bg-amethyst { background: linear-gradient(145deg, #9966cc, #8a2be2); }
+        .bg-obsidian { background: linear-gradient(145deg, #000000, #464646); }
+        .bg-silver { background: linear-gradient(145deg, #c0c0c0, #a8a8a8); color: #333; }
+        .bg-bronze { background: linear-gradient(145deg, #cd7f32, #b08d57); }
         
         /* --- 14. Адаптивность --- */
         @media (min-width: 768px) {
@@ -1326,7 +1334,7 @@
     <div class="app-container">
         <header class="app-header">
             <div class="header-left">
-                <h1>Case Battles</h1>
+                <h1>UnGifts</h1>
                 <button id="settings-btn" class="header-btn" title="Настройки">⚙️</button>
             </div>
             <div class="header-right">
@@ -1391,6 +1399,10 @@
                     'case_premium_name': 'Премиум Кейс',
                     'case_divine_name': 'Божественный Кейс',
                     'case_ancient_name': 'Древний Кейс',
+                    'case_mythical_name': 'Мифический Кейс',
+                    'case_celestial_name': 'Небесный Кейс',
+                    'case_eternal_name': 'Вечный Кейс',
+                    'case_immortal_name': 'Бессмертный Кейс',
                     'buy_btn': 'Купить',
                     'upgrade_btn': 'Улучшить',
                     'sell_btn': 'Продать',
@@ -1480,6 +1492,10 @@
                     'case_premium_name': 'Premium Case',
                     'case_divine_name': 'Divine Case',
                     'case_ancient_name': 'Ancient Case',
+                    'case_mythical_name': 'Mythical Case',
+                    'case_celestial_name': 'Celestial Case',
+                    'case_eternal_name': 'Eternal Case',
+                    'case_immortal_name': 'Immortal Case',
                     'buy_btn': 'Buy',
                     'upgrade_btn': 'Upgrade',
                     'sell_btn': 'Sell',
@@ -1558,24 +1574,50 @@
             };
 
             const GIFT_CATALOG = {
-                'duck': { baseName: 'Duck', icon: '🦆', baseColor: 'yellow', rarity: 1.1 },
-                'crystal': { baseName: 'Crystal', icon: '💎', baseColor: 'blue', rarity: 1.3 },
-                'rocket': { baseName: 'Rocket', icon: '🚀', baseColor: 'red', rarity: 1.2 },
-                'cat': { baseName: 'Cat', icon: '🐱', baseColor: 'grey', rarity: 1.1 },
-                'snake': { baseName: 'Lunar Snake', icon: '🐍', baseColor: 'purple', rarity: 1.5 },
-                'whale': { baseName: 'Whale', icon: '🐳', baseColor: 'blue', rarity: 1.4 },
-                'dragon': { baseName: 'Dragon', icon: '🐉', baseColor: 'red', rarity: 1.8 },
-                'unicorn': { baseName: 'Unicorn', icon: '🦄', baseColor: 'white', rarity: 1.7 },
-                'phoenix': { baseName: 'Phoenix', icon: '🔥', baseColor: 'orange', rarity: 2.0 },
-                'robot': { baseName: 'Robot', icon: '🤖', baseColor: 'grey', rarity: 1.6 },
-                'alien': { baseName: 'Alien', icon: '👽', baseColor: 'green', rarity: 1.9 },
-                'ghost': { baseName: 'Ghost', icon: '👻', baseColor: 'white', rarity: 1.4 },
-                'panda': { baseName: 'Panda', icon: '🐼', baseColor: 'black', rarity: 1.3 },
-                'tiger': { baseName: 'Tiger', icon: '🐯', baseColor: 'orange', rarity: 1.6 },
-                'fox': { baseName: 'Fox', icon: '🦊', baseColor: 'orange', rarity: 1.4 },
-                'owl': { baseName: 'Owl', icon: '🦉', baseColor: 'brown', rarity: 1.5 },
-                'peacock': { baseName: 'Peacock', icon: '🦚', baseColor: 'blue', rarity: 1.8 },
-                'dinosaur': { baseName: 'Dinosaur', icon: '🦕', baseColor: 'green', rarity: 1.7 }
+                'duck': { baseName: 'Duck', icon: '🦆', baseColor: 'yellow', rarity: 1.1, weight: 30 },
+                'crystal': { baseName: 'Crystal', icon: '💎', baseColor: 'blue', rarity: 1.3, weight: 20 },
+                'rocket': { baseName: 'Rocket', icon: '🚀', baseColor: 'red', rarity: 1.2, weight: 25 },
+                'cat': { baseName: 'Cat', icon: '🐱', baseColor: 'grey', rarity: 1.1, weight: 30 },
+                'snake': { baseName: 'Lunar Snake', icon: '🐍', baseColor: 'purple', rarity: 1.5, weight: 15 },
+                'whale': { baseName: 'Whale', icon: '🐳', baseColor: 'blue', rarity: 1.4, weight: 18 },
+                'dragon': { baseName: 'Dragon', icon: '🐉', baseColor: 'red', rarity: 1.8, weight: 8 },
+                'unicorn': { baseName: 'Unicorn', icon: '🦄', baseColor: 'white', rarity: 1.7, weight: 10 },
+                'phoenix': { baseName: 'Phoenix', icon: '🔥', baseColor: 'orange', rarity: 2.0, weight: 5 },
+                'robot': { baseName: 'Robot', icon: '🤖', baseColor: 'grey', rarity: 1.6, weight: 12 },
+                'alien': { baseName: 'Alien', icon: '👽', baseColor: 'green', rarity: 1.9, weight: 6 },
+                'ghost': { baseName: 'Ghost', icon: '👻', baseColor: 'white', rarity: 1.4, weight: 18 },
+                'panda': { baseName: 'Panda', icon: '🐼', baseColor: 'black', rarity: 1.3, weight: 20 },
+                'tiger': { baseName: 'Tiger', icon: '🐯', baseColor: 'orange', rarity: 1.6, weight: 12 },
+                'fox': { baseName: 'Fox', icon: '🦊', baseColor: 'orange', rarity: 1.4, weight: 18 },
+                'owl': { baseName: 'Owl', icon: '🦉', baseColor: 'brown', rarity: 1.5, weight: 15 },
+                'peacock': { baseName: 'Peacock', icon: '🦚', baseColor: 'blue', rarity: 1.8, weight: 8 },
+                'dinosaur': { baseName: 'Dinosaur', icon: '🦕', baseColor: 'green', rarity: 1.7, weight: 10 },
+                'bear': { baseName: 'Bear', icon: '🐻', baseColor: 'brown', rarity: 1.3, weight: 20 },
+                'lion': { baseName: 'Lion', icon: '🦁', baseColor: 'yellow', rarity: 1.6, weight: 12 },
+                'eagle': { baseName: 'Eagle', icon: '🦅', baseColor: 'brown', rarity: 1.7, weight: 10 },
+                'shark': { baseName: 'Shark', icon: '🦈', baseColor: 'blue', rarity: 1.5, weight: 15 },
+                'turtle': { baseName: 'Turtle', icon: '🐢', baseColor: 'green', rarity: 1.4, weight: 18 },
+                'bee': { baseName: 'Bee', icon: '🐝', baseColor: 'yellow', rarity: 1.2, weight: 25 },
+                'butterfly': { baseName: 'Butterfly', icon: '🦋', baseColor: 'purple', rarity: 1.4, weight: 18 },
+                'octopus': { baseName: 'Octopus', icon: '🐙', baseColor: 'red', rarity: 1.5, weight: 15 },
+                'monkey': { baseName: 'Monkey', icon: '🐵', baseColor: 'brown', rarity: 1.3, weight: 20 },
+                'elephant': { baseName: 'Elephant', icon: '🐘', baseColor: 'grey', rarity: 1.6, weight: 12 },
+                'giraffe': { baseName: 'Giraffe', icon: '🦒', baseColor: 'yellow', rarity: 1.5, weight: 15 },
+                'zebra': { baseName: 'Zebra', icon: '🦓', baseColor: 'black', rarity: 1.4, weight: 18 },
+                'kangaroo': { baseName: 'Kangaroo', icon: '🦘', baseColor: 'brown', rarity: 1.5, weight: 15 },
+                'rhino': { baseName: 'Rhino', icon: '🦏', baseColor: 'grey', rarity: 1.6, weight: 12 },
+                'hippo': { baseName: 'Hippo', icon: '🦛', baseColor: 'grey', rarity: 1.4, weight: 18 },
+                'crocodile': { baseName: 'Crocodile', icon: '🐊', baseColor: 'green', rarity: 1.5, weight: 15 },
+                'gorilla': { baseName: 'Gorilla', icon: '🦍', baseColor: 'black', rarity: 1.7, weight: 10 },
+                'penguin': { baseName: 'Penguin', icon: '🐧', baseColor: 'black', rarity: 1.4, weight: 18 },
+                'koala': { baseName: 'Koala', icon: '🐨', baseColor: 'grey', rarity: 1.3, weight: 20 },
+                'sloth': { baseName: 'Sloth', icon: '🦥', baseColor: 'brown', rarity: 1.3, weight: 20 },
+                'otter': { baseName: 'Otter', icon: '🦦', baseColor: 'brown', rarity: 1.4, weight: 18 },
+                'raccoon': { baseName: 'Raccoon', icon: '🦝', baseColor: 'grey', rarity: 1.3, weight: 20 },
+                'hedgehog': { baseName: 'Hedgehog', icon: '🦔', baseColor: 'brown', rarity: 1.3, weight: 20 },
+                'bat': { baseName: 'Bat', icon: '🦇', baseColor: 'black', rarity: 1.4, weight: 18 },
+                'llama': { baseName: 'Llama', icon: '🦙', baseColor: 'white', rarity: 1.5, weight: 15 },
+                'camel': { baseName: 'Camel', icon: '🐫', baseColor: 'brown', rarity: 1.4, weight: 18 }
             };
 
             const BACKDROPS = {
@@ -1593,7 +1635,15 @@
                 'lava': { name: 'Lava', color: 'red', css_class: 'bg-lava', pattern: '🌋', rarity: 2.8, weight: 5 },
                 'forest': { name: 'Forest', color: 'green', css_class: 'bg-forest', pattern: '🌲', rarity: 2.2, weight: 8 },
                 'cosmic': { name: 'Cosmic', color: 'purple', css_class: 'bg-cosmic', pattern: '☄️', rarity: 3.8, weight: 2 },
-                'crystal': { name: 'Crystal', color: 'blue', css_class: 'bg-crystal', pattern: '❄️', rarity: 2.5, weight: 6 }
+                'crystal': { name: 'Crystal', color: 'blue', css_class: 'bg-crystal', pattern: '❄️', rarity: 2.5, weight: 6 },
+                'emerald': { name: 'Emerald', color: 'green', css_class: 'bg-emerald', pattern: '💚', rarity: 3.5, weight: 3 },
+                'sapphire': { name: 'Sapphire', color: 'blue', css_class: 'bg-sapphire', pattern: '💙', rarity: 3.8, weight: 2 },
+                'ruby': { name: 'Ruby', color: 'red', css_class: 'bg-ruby', pattern: '❤️', rarity: 4, weight: 2 },
+                'diamond': { name: 'Diamond', color: 'white', css_class: 'bg-diamond', pattern: '💎', rarity: 5, weight: 1 },
+                'amethyst': { name: 'Amethyst', color: 'purple', css_class: 'bg-amethyst', pattern: '💜', rarity: 3.2, weight: 4 },
+                'obsidian': { name: 'Obsidian', color: 'black', css_class: 'bg-obsidian', pattern: '⚫', rarity: 4.5, weight: 1 },
+                'silver': { name: 'Silver', color: 'grey', css_class: 'bg-silver', pattern: '⚪', rarity: 3, weight: 5 },
+                'bronze': { name: 'Bronze', color: 'brown', css_class: 'bg-bronze', pattern: '🟫', rarity: 2.8, weight: 6 }
             };
 
             const SYMBOLS = {
@@ -1607,97 +1657,148 @@
                 'heart': { name: 'Heart', icon: '❤️', rarity: 2.0, weight: 18 },
                 'lightning': { name: 'Lightning', icon: '⚡', rarity: 2.8, weight: 10 },
                 'moon': { name: 'Moon', icon: '🌙', rarity: 2.3, weight: 14 },
-                'sun': { name: 'Sun', icon: '☀️', rarity: 2.6, weight: 11 }
+                'sun': { name: 'Sun', icon: '☀️', rarity: 2.6, weight: 11 },
+                'comet': { name: 'Comet', icon: '☄️', rarity: 3.2, weight: 7 },
+                'planet': { name: 'Planet', icon: '🪐', rarity: 3.5, weight: 5 },
+                'meteor': { name: 'Meteor', icon: '🌠', rarity: 3.8, weight: 3 },
+                'constellation': { name: 'Constellation', icon: '🔭', rarity: 4, weight: 2 },
+                'supernova': { name: 'Supernova', icon: '💫', rarity: 4.5, weight: 1 },
+                'black_hole': { name: 'Black Hole', icon: '⚫', rarity: 5, weight: 0.5 },
+                'nebula': { name: 'Nebula', icon: '🌌', rarity: 4.2, weight: 1 }
             };
 
             // БАЗА ДАННЫХ КЕЙСОВ С ИЗОБРАЖЕНИЯМИ
             const CASES = {
                 'common': { 
                     nameKey: 'case_common_name', 
-                    icon: '<a href="https://ibb.co/Z11nj9f6"><img src="https://i.ibb.co/Z11nj9f6/daef7b6e-0005-4fc1-824d-678c5edc93b7-no-bg-preview-carve-photos.png"', // Замените на вашу ссылку
+                    icon: 'https://i.ibb.co/Z11nj9f6/daef7b6e-0005-4fc1-824d-678c5edc93b7-no-bg-preview-carve-photos.png',
                     iconType: 'image',
                     cost: 100, 
                     loot: { 
-                        gifts: ['duck', 'cat', 'fox'], 
+                        gifts: ['duck', 'cat', 'fox', 'bee', 'penguin', 'koala'], 
                         backdrops: ['default', 'green_shamrock'], 
                         symbols: ['none', 'coin_purse', 'heart'] 
                     } 
                 },
                 'rare': { 
                     nameKey: 'case_rare_name', 
-                    icon: '<a href="https://ibb.co/N2mLymqH"><img src="https://i.ibb.co/N2mLymqH/5247130699528080153-no-bg-preview-carve-photos.png"', // Замените на вашу ссылку
+                    icon: 'https://i.ibb.co/N2mLymqH/5247130699528080153-no-bg-preview-carve-photos.png',
                     iconType: 'image',
                     cost: 500, 
                     loot: { 
-                        gifts: ['duck', 'cat', 'rocket', 'whale', 'ghost'], 
+                        gifts: ['duck', 'cat', 'rocket', 'whale', 'ghost', 'turtle', 'butterfly', 'sloth'], 
                         backdrops: ['default', 'green_shamrock', 'blue_ocean', 'purple_mist'], 
                         symbols: ['none', 'coin_purse', 'gem', 'star'] 
                     } 
                 },
                 'epic': { 
                     nameKey: 'case_epic_name', 
-                    icon: '<a href="https://ibb.co/rB5SpG5"><img src="https://i.ibb.co/rB5SpG5/5247130699528080147-no-bg-preview-carve-photos.png"', // Замените на вашу ссылку
+                    icon: 'https://i.ibb.co/rB5SpG5/5247130699528080147-no-bg-preview-carve-photos.png',
                     iconType: 'image',
                     cost: 2000, 
                     loot: { 
-                        gifts: ['crystal', 'snake', 'whale', 'robot', 'tiger', 'owl'], 
+                        gifts: ['crystal', 'snake', 'whale', 'robot', 'tiger', 'owl', 'shark', 'octopus', 'giraffe'], 
                         backdrops: ['purple_mist', 'red_fire', 'yellow_sun', 'blue_ocean', 'forest'], 
                         symbols: ['coin_purse', 'gem', 'crown', 'lightning'] 
                     } 
                 },
                 'legendary': { 
                     nameKey: 'case_legendary_name', 
-                    icon: '<a href="https://ibb.co/mV7Z3n5W"><img src="https://i.ibb.co/mV7Z3n5W/5247130699528080150-no-bg-preview-carve-photos.png"', // Замените на вашу ссылку
+                    icon: 'https://i.ibb.co/mV7Z3n5W/5247130699528080150-no-bg-preview-carve-photos.png',
                     iconType: 'image',
                     cost: 5000, 
                     loot: { 
-                        gifts: ['dragon', 'unicorn', 'phoenix', 'alien', 'peacock'], 
+                        gifts: ['dragon', 'unicorn', 'phoenix', 'alien', 'peacock', 'lion', 'eagle', 'gorilla'], 
                         backdrops: ['yellow_sun', 'golden', 'rainbow', 'lava'], 
                         symbols: ['gem', 'crown', 'diamond', 'moon'] 
                     } 
                 },
                 'mystery': { 
                     nameKey: 'case_mystery_name', 
-                    icon: '<a href="https://ibb.co/608CGrN6"><img src="https://i.ibb.co/608CGrN6/5247130699528080149-no-bg-preview-carve-photos.png"', // Замените на вашу ссылку
+                    icon: 'https://i.ibb.co/608CGrN6/5247130699528080149-no-bg-preview-carve-photos.png',
                     iconType: 'image',
                     cost: 1500, 
                     loot: { 
-                        gifts: ['duck', 'cat', 'rocket', 'whale', 'crystal', 'snake', 'robot', 'panda'], 
+                        gifts: ['duck', 'cat', 'rocket', 'whale', 'crystal', 'snake', 'robot', 'panda', 'bear', 'hedgehog'], 
                         backdrops: ['default', 'green_shamrock', 'blue_ocean', 'purple_mist', 'red_fire', 'forest'], 
                         symbols: ['none', 'coin_purse', 'gem', 'crown', 'heart', 'star'] 
                     } 
                 },
                 'premium': { 
                     nameKey: 'case_premium_name', 
-                    icon: '<a href="https://ibb.co/MDD2Xtkz"><img src="https://i.ibb.co/MDD2Xtkz/5247130699528080154-no-bg-preview-carve-photos.png"', // Замените на вашу ссылку
+                    icon: 'https://i.ibb.co/MDD2Xtkz/5247130699528080154-no-bg-preview-carve-photos.png',
                     iconType: 'image',
                     cost: 3500, 
                     loot: { 
-                        gifts: ['snake', 'whale', 'dragon', 'unicorn', 'phoenix', 'dinosaur'], 
+                        gifts: ['snake', 'whale', 'dragon', 'unicorn', 'phoenix', 'dinosaur', 'rhino', 'elephant', 'kangaroo'], 
                         backdrops: ['golden', 'rainbow', 'galaxy', 'neon'], 
                         symbols: ['crown', 'diamond', 'trophy', 'sun'] 
                     } 
                 },
                 'divine': { 
                     nameKey: 'case_divine_name', 
-                    icon: '<a href="https://ibb.co/PvX59vhD"><img src="https://i.ibb.co/PvX59vhD/5247130699528080152-no-bg-preview-carve-photos.png"', // Замените на вашу ссылку
+                    icon: 'https://i.ibb.co/PvX59vhD/5247130699528080152-no-bg-preview-carve-photos.png',
                     iconType: 'image',
                     cost: 8000, 
                     loot: { 
-                        gifts: ['phoenix', 'dragon', 'unicorn', 'alien', 'peacock'], 
+                        gifts: ['phoenix', 'dragon', 'unicorn', 'alien', 'peacock', 'eagle', 'gorilla', 'rhino'], 
                         backdrops: ['galaxy', 'cosmic', 'black_void', 'crystal'], 
                         symbols: ['diamond', 'trophy', 'sun', 'lightning'] 
                     } 
                 },
                 'ancient': { 
                     nameKey: 'case_ancient_name', 
-                    icon: '<a href="https://ibb.co/jNtW0nD"><img src="https://i.ibb.co/jNtW0nD/5247130699528080151-no-bg-preview-carve-photos.png"', // Замените на вашу ссылку
+                    icon: 'https://i.ibb.co/jNtW0nD/5247130699528080151-no-bg-preview-carve-photos.png',
                     iconType: 'image',
                     cost: 12000, 
                     loot: { 
-                        gifts: ['dragon', 'phoenix', 'dinosaur', 'alien'], 
+                        gifts: ['dragon', 'phoenix', 'dinosaur', 'alien', 'gorilla', 'rhino', 'elephant'], 
                         backdrops: ['black_void', 'cosmic', 'galaxy', 'neon'], 
                         symbols: ['trophy', 'diamond', 'crown', 'sun'] 
+                    } 
+                },
+                'mythical': { 
+                    nameKey: 'case_mythical_name', 
+                    icon: '<a href="https://ibb.co/hxts5Jkh"><img src="https://i.ibb.co/hxts5Jkh/5251281257138686781-no-bg-preview-carve-photos.png"',
+                    iconType: 'image',
+                    cost: 15000, 
+                    loot: { 
+                        gifts: ['phoenix', 'dragon', 'unicorn', 'peacock', 'eagle', 'lion'], 
+                        backdrops: ['emerald', 'sapphire', 'ruby', 'diamond'], 
+                        symbols: ['comet', 'planet', 'meteor', 'constellation'] 
+                    } 
+                },
+                'celestial': { 
+                    nameKey: 'case_celestial_name', 
+                    icon: '<a href="https://ibb.co/8L41ZmbH"><img src="https://i.ibb.co/8L41ZmbH/5251281257138686779-no-bg-preview-carve-photos.png"',
+                    iconType: 'image',
+                    cost: 20000, 
+                    loot: { 
+                        gifts: ['phoenix', 'dragon', 'unicorn', 'alien', 'eagle'], 
+                        backdrops: ['amethyst', 'obsidian', 'silver', 'bronze'], 
+                        symbols: ['supernova', 'black_hole', 'nebula', 'constellation'] 
+                    } 
+                },
+                'eternal': { 
+                    nameKey: 'case_eternal_name', 
+                    icon: '<a href="https://ibb.co/chSxNzgF"><img src="https://i.ibb.co/chSxNzgF/5251281257138686782-no-bg-preview-carve-photos.png"',
+                    iconType: 'image',
+                    cost: 30000, 
+                    loot: { 
+                        gifts: ['phoenix', 'dragon', 'unicorn'], 
+                        backdrops: ['diamond', 'obsidian', 'ruby'], 
+                        symbols: ['supernova', 'black_hole', 'nebula'] 
+                    } 
+                },
+                'immortal': { 
+                    nameKey: 'case_immortal_name', 
+                    icon: '<a href="https://ibb.co/9HVzv9HY"><img src="https://i.ibb.co/9HVzv9HY/5251281257138686780-edited-free-carve-photos.png"',
+                    iconType: 'image',
+                    cost: 50000, 
+                    loot: { 
+                        gifts: ['phoenix', 'dragon'], 
+                        backdrops: ['black_void', 'diamond', 'ruby'], 
+                        symbols: ['black_hole', 'supernova'] 
                     } 
                 }
             };
@@ -1709,7 +1810,7 @@
             let lastClickTime = 0;
             let clickCount = 0;
             let autoClickerDetected = false;
-            let usedPromoCodes = JSON.parse(localStorage.getItem('giftsBattle_usedPromoCodes') || '[]');
+            let usedPromoCodes = JSON.parse(localStorage.getItem('ungifts_usedPromoCodes') || '[]');
             let battlePlayerGifts = [];
             let battleBotGifts = [];
             
@@ -1750,7 +1851,7 @@
 
             function setLanguage(lang) {
                 currentLanguage = lang;
-                localStorage.setItem('giftsBattle_lang', lang);
+                localStorage.setItem('ungifts_lang', lang);
                 updateLanguage();
             }
 
@@ -1764,9 +1865,9 @@
 
             function saveGame() {
                 try {
-                    localStorage.setItem('giftsBattle_stars', stars);
-                    localStorage.setItem('giftsBattle_inventory', JSON.stringify(inventory));
-                    localStorage.setItem('giftsBattle_usedPromoCodes', JSON.stringify(usedPromoCodes));
+                    localStorage.setItem('ungifts_stars', stars);
+                    localStorage.setItem('ungifts_inventory', JSON.stringify(inventory));
+                    localStorage.setItem('ungifts_usedPromoCodes', JSON.stringify(usedPromoCodes));
                 } catch (e) {
                     console.error("Failed to save game:", e);
                 }
@@ -1774,14 +1875,14 @@
 
             function loadGame() {
                 try {
-                    const savedLang = localStorage.getItem('giftsBattle_lang');
+                    const savedLang = localStorage.getItem('ungifts_lang');
                     if (savedLang) {
                         currentLanguage = savedLang;
                     }
 
-                    const savedStars = localStorage.getItem('giftsBattle_stars');
-                    const savedInventory = localStorage.getItem('giftsBattle_inventory');
-                    const savedPromoCodes = localStorage.getItem('giftsBattle_usedPromoCodes');
+                    const savedStars = localStorage.getItem('ungifts_stars');
+                    const savedInventory = localStorage.getItem('ungifts_inventory');
+                    const savedPromoCodes = localStorage.getItem('ungifts_usedPromoCodes');
                     if (savedStars !== null) {
                         stars = parseInt(savedStars, 10) || 0;
                     }
@@ -1931,15 +2032,53 @@
             function generateRandomGift(caseId) {
                 const lootTable = CASES[caseId].loot;
                 
-                const giftId = lootTable.gifts[Math.floor(Math.random() * lootTable.gifts.length)];
-                const backdropId = lootTable.backdrops[Math.floor(Math.random() * lootTable.backdrops.length)];
-                const symbolId = lootTable.symbols[Math.floor(Math.random() * lootTable.symbols.length)];
+                // Взвешенный выбор подарка
+                const giftWeights = lootTable.gifts.map(giftId => GIFT_CATALOG[giftId].weight);
+                const totalGiftWeight = giftWeights.reduce((sum, weight) => sum + weight, 0);
+                let randomGift = Math.random() * totalGiftWeight;
+                let selectedGiftId = lootTable.gifts[0];
+                
+                for (let i = 0; i < lootTable.gifts.length; i++) {
+                    randomGift -= GIFT_CATALOG[lootTable.gifts[i]].weight;
+                    if (randomGift <= 0) {
+                        selectedGiftId = lootTable.gifts[i];
+                        break;
+                    }
+                }
+
+                // Взвешенный выбор фона
+                const backdropWeights = lootTable.backdrops.map(backdropId => BACKDROPS[backdropId].weight);
+                const totalBackdropWeight = backdropWeights.reduce((sum, weight) => sum + weight, 0);
+                let randomBackdrop = Math.random() * totalBackdropWeight;
+                let selectedBackdropId = lootTable.backdrops[0];
+                
+                for (let i = 0; i < lootTable.backdrops.length; i++) {
+                    randomBackdrop -= BACKDROPS[lootTable.backdrops[i]].weight;
+                    if (randomBackdrop <= 0) {
+                        selectedBackdropId = lootTable.backdrops[i];
+                        break;
+                    }
+                }
+
+                // Взвешенный выбор символа
+                const symbolWeights = lootTable.symbols.map(symbolId => SYMBOLS[symbolId].weight);
+                const totalSymbolWeight = symbolWeights.reduce((sum, weight) => sum + weight, 0);
+                let randomSymbol = Math.random() * totalSymbolWeight;
+                let selectedSymbolId = lootTable.symbols[0];
+                
+                for (let i = 0; i < lootTable.symbols.length; i++) {
+                    randomSymbol -= SYMBOLS[lootTable.symbols[i]].weight;
+                    if (randomSymbol <= 0) {
+                        selectedSymbolId = lootTable.symbols[i];
+                        break;
+                    }
+                }
 
                 const newGift = {
                     id: Date.now() + Math.random(),
-                    giftId: giftId,
-                    backdropId: backdropId,
-                    symbolId: symbolId
+                    giftId: selectedGiftId,
+                    backdropId: selectedBackdropId,
+                    symbolId: selectedSymbolId
                 };
                 return newGift;
             }
@@ -2732,14 +2871,33 @@
                 selectedPlayerGifts = [];
             }
 
-            // --- 13. ИНФОРМАЦИЯ О КЕЙСАХ ---
+            // --- 13. ИНФОРМАЦИЯ О КЕЙСАХ (ИСПРАВЛЕННАЯ) ---
+            function calculateWeightedChances(itemIds, itemDatabase) {
+                const totalWeight = itemIds.reduce((sum, id) => sum + itemDatabase[id].weight, 0);
+                const chances = {};
+                
+                itemIds.forEach(id => {
+                    chances[id] = ((itemDatabase[id].weight / totalWeight) * 100).toFixed(1);
+                });
+                
+                return chances;
+            }
+
+            function getRarityColor(rarity) {
+                if (rarity >= 4) return '#ff6b6b'; // Красный для очень редких
+                if (rarity >= 3) return '#9b59b6'; // Фиолетовый для редких
+                if (rarity >= 2) return '#3498db'; // Синий для необычных
+                if (rarity >= 1.5) return '#2ecc71'; // Зеленый для обычных
+                return '#95a5a6'; // Серый для базовых
+            }
+
             function showCaseInfo(caseId) {
                 const caseData = CASES[caseId];
                 
-                // Рассчитываем шансы выпадения
-                const giftsChance = Math.round(100 / caseData.loot.gifts.length);
-                const backdropsChance = Math.round(100 / caseData.loot.backdrops.length);
-                const symbolsChance = Math.round(100 / caseData.loot.symbols.length);
+                // Рассчитываем взвешенные шансы выпадения
+                const giftChances = calculateWeightedChances(caseData.loot.gifts, GIFT_CATALOG);
+                const backdropChances = calculateWeightedChances(caseData.loot.backdrops, BACKDROPS);
+                const symbolChances = calculateWeightedChances(caseData.loot.symbols, SYMBOLS);
                 
                 const infoHtml = `
                     <div class="case-info-section">
@@ -2750,11 +2908,13 @@
                             <div class="case-info-items">
                                 ${caseData.loot.gifts.map(giftId => {
                                     const gift = GIFT_CATALOG[giftId];
+                                    const chance = giftChances[giftId];
+                                    const rarityColor = getRarityColor(gift.rarity);
                                     return `
-                                        <div class="case-info-item">
+                                        <div class="case-info-item" style="border-color: ${rarityColor}">
                                             <div class="case-info-item-icon">${gift.icon}</div>
                                             <div class="case-info-item-name">${gift.baseName}</div>
-                                            <div class="case-info-item-chance">${giftsChance}%</div>
+                                            <div class="case-info-item-chance" style="color: ${rarityColor}">${chance}%</div>
                                         </div>
                                     `;
                                 }).join('')}
@@ -2766,11 +2926,13 @@
                             <div class="case-info-items">
                                 ${caseData.loot.backdrops.map(backdropId => {
                                     const backdrop = BACKDROPS[backdropId];
+                                    const chance = backdropChances[backdropId];
+                                    const rarityColor = getRarityColor(backdrop.rarity);
                                     return `
-                                        <div class="case-info-item">
+                                        <div class="case-info-item" style="border-color: ${rarityColor}">
                                             <div class="case-info-item-icon">${backdrop.pattern}</div>
                                             <div class="case-info-item-name">${backdrop.name}</div>
-                                            <div class="case-info-item-chance">${backdropsChance}%</div>
+                                            <div class="case-info-item-chance" style="color: ${rarityColor}">${chance}%</div>
                                         </div>
                                     `;
                                 }).join('')}
@@ -2782,11 +2944,13 @@
                             <div class="case-info-items">
                                 ${caseData.loot.symbols.map(symbolId => {
                                     const symbol = SYMBOLS[symbolId];
+                                    const chance = symbolChances[symbolId];
+                                    const rarityColor = getRarityColor(symbol.rarity);
                                     return `
-                                        <div class="case-info-item">
+                                        <div class="case-info-item" style="border-color: ${rarityColor}">
                                             <div class="case-info-item-icon">${symbol.icon}</div>
                                             <div class="case-info-item-name">${symbol.name}</div>
-                                            <div class="case-info-item-chance">${symbolsChance}%</div>
+                                            <div class="case-info-item-chance" style="color: ${rarityColor}">${chance}%</div>
                                         </div>
                                     `;
                                 }).join('')}
@@ -3099,7 +3263,9 @@
                     <div class="settings-content">
                         <h4 style="margin-bottom: 10px; font-weight: bold;">${t('changelog_title')}</h4>
                         <ul class="changelog-list">
-                            <li>• ${currentLanguage === 'ru' ? 'Баг-фикс' : 'Bug fixes'}</li>
+                            <li>• ${currentLanguage === 'ru' ? 'Переименована игра в UnGifts' : 'Game renamed to UnGifts'}</li>
+                            <li>• ${currentLanguage === 'ru' ? 'Исправлены шансы выпадения в информации о кейсах' : 'Fixed drop chances in case information'}</li>
+                            <li>• ${currentLanguage === 'ru' ? 'Добавлены новые подарки, кейсы, фоны и значки' : 'Added new gifts, cases, backdrops and symbols'}</li>
                             <li>• ${currentLanguage === 'ru' ? 'Промокоды (промокоды: 1STPROMO, BUGFIXXX)' : 'Promo codes (codes: 1STPROMO, BUGFIXXX)'}</li>
                         </ul>
                         <button class="primary-btn" data-modal-close>
@@ -3170,7 +3336,7 @@
             tradeBtn.addEventListener('click', handleTradeClick);
             promoBtn.addEventListener('click', handlePromoClick);
             changelogBtn.addEventListener('click', handleChangelogClick);
-            inventoryBtn.addEventListener('click', handleInventoryClick); // Исправлено: добавлен обработчик для кнопки инвентаря
+            inventoryBtn.addEventListener('click', handleInventoryClick);
 
             modalBackdrop.addEventListener('click', (e) => {
                 if (e.target === modalBackdrop || e.target.closest('[data-modal-close]')) {
